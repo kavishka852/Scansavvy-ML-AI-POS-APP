@@ -34,7 +34,7 @@ const Onboarding = () => {
 
   const handleGetStarted = () => {
     // router.push('/(tabs)');
-    console.log('Get Started');
+    router.push('/(screens)/Login');
   };
 
   const fadeIn = () => {

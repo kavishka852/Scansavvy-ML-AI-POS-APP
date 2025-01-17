@@ -1,18 +1,50 @@
-import { View, Text, SafeAreaView, Dimensions, Platform, StyleSheet, TouchableOpacity, TextInput, Image, useWindowDimensions, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView ,Dimensions,Platform, StyleSheet, TouchableOpacity, TextInput, Image, useWindowDimensions, ScrollView} from 'react-native'
 import React from 'react'
 import { useFonts } from 'expo-font';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { Ionicons, FontAwesome5, MaterialIcons, EvilIcons, FontAwesome } from '@expo/vector-icons';
+import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { useRouter } from 'expo-router';
-import Fontisto from '@expo/vector-icons/Fontisto';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+// data image
+const slides = [
+  {
+    image: require("../../../assets/images/travel/1.jpg"),
+  },
+  {
+    image: require("../../../assets/images/travel/2.jpg"),
+  },
+  {
+    image: require("../../../assets/images/travel/3.jpg"),
+  },
+  {
+    image: require("../../../assets/images/travel/4.jpg"),
+  },
+  {
+    image: require("../../../assets/images/travel/5.jpg"),
+  },
+  {
+    image: require("../../../assets/images/travel/6.jpg"),
+  }
+]
+const { width: screenWidth } = Dimensions.get('window')
 
 const HomeScreens = () => {
+  const router = useRouter( )
+  const navigation = useNavigation()
+  const {width,height} = useWindowDimensions()
   const [fontsLoaded, fontError] = useFonts({
     HelvetIns: require("../../../assets/fonts/HelvetIns.ttf"),
     PlaywriteNL: require("../../../assets/fonts/Playwrite_NL/Playwrite-NL.ttf"),
     Montserrat: require("../../../assets/fonts/Montserrat/static/Montserrat-Regular.ttf"),
 
   });
+  const _renderItem = ({item} :  any) => {
+    return (
+      <TouchableOpacity style={{width:'100%'}}>
+          <Image source = {item.image} style={{width:'100%',height:280, borderRadius:15}} />
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <SafeAreaView style={styles.box}>
@@ -25,7 +57,7 @@ const HomeScreens = () => {
                 <Ionicons name="filter" size={30} color="black" />
               </TouchableOpacity>
               <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={[styles.headerTitle, { fontFamily: "HelvetIns", fontSize: 30, marginLeft:9 }]}>ScanSavvy</Text>
+                <Text style={[styles.headerTitle, { fontFamily: "HelvetIns", fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
               </View>
               <TouchableOpacity>
                 <View>
@@ -40,7 +72,7 @@ const HomeScreens = () => {
         </View>
 
 
-        {/* {body} */}
+        {/* {Search product} */}
         <View style={styles.boxSearch}>
           <View style={styles.boxSearchContent}>
             <Text style={styles.searchTitle}>
@@ -60,9 +92,25 @@ const HomeScreens = () => {
             </View>
           </View>
         </View>
+
+        <View>
+                <View style={{width:'100%'}}>
+                   
+                   {
+                    
+                       <Carousel
+                       sliderWidth={screenWidth}
+                       sliderHeight={screenWidth}
+                       itemWidth={screenWidth - 100}
+                       data={slides}
+                       renderItem={_renderItem}
+                       hasParallaxImages={true}
+                   />
+                   }
+                </View>
+            </View>
+
       </View>
-
-
     </SafeAreaView>
   )
 }

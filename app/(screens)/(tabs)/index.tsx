@@ -50,7 +50,7 @@ const HomeScreens = () => {
     <SafeAreaView style={styles.box}>
       <ScrollView style={styles.container}>
         {/* {header} */}
-        <View style={styles.headerTop}>
+        {/* <View style={styles.headerTop}>
           <View>
             <View style={styles.headerContent}>
               <TouchableOpacity>
@@ -69,7 +69,7 @@ const HomeScreens = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
 
 
         {/* {Search product} */}

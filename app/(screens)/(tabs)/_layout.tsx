@@ -1,16 +1,32 @@
-import { View, StyleSheet, Dimensions, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, Pressable, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, EvilIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { getHeaderTitle, HeaderTitle } from '@react-navigation/elements';
+import Constants from 'expo-constants';
+import { useFonts } from 'expo-font';
+
+// const MyHeader = ({ title, style }: any) => {
+//   console.warn(title);
+//   return <View style={style}>
+//     <Text style={{ fontSize: 20, color: "black", paddingTop: 100 }}>1222212</Text>
+//   </View>
+// }
 
 const TabRootLayout = () => {
+  const [fontsLoaded, fontError] = useFonts({
+    HelvetIns: require("../../../assets/fonts/HelvetIns.ttf"),
+    PlaywriteNL: require("../../../assets/fonts/Playwrite_NL/Playwrite-NL.ttf"),
+    Montserrat: require("../../../assets/fonts/Montserrat/static/Montserrat-Regular.ttf"),
+  
+  });
   const { width } = Dimensions.get('window');
-
+  const heightHeader = Constants.statusBarHeight + 55;
   return (
     <>
-          <Tabs
+      <Tabs
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
           tabBarActiveTintColor: '#1E90FF', // Active icon color
           tabBarInactiveTintColor: '#A9A9A9', // Inactive icon color
           tabBarStyle: {
@@ -30,12 +46,45 @@ const TabRootLayout = () => {
             fontSize: 12,
             fontWeight: '600',
           },
+          header: ({ navigation, route, options }) => {
+            const title = getHeaderTitle(options, route.name);
+            if (title === "Home") {
+              return <>
+                <View style={{ width: '100%', height: heightHeader, backgroundColor: "#1E90FF", paddingTop: Constants.statusBarHeight }}>
+                  <View style={styles.headerTop}>
+                    <View>
+                      <View style={styles.headerContent}>
+                        <TouchableOpacity>
+                          <Ionicons name="filter" size={30} color="white" />
+                        </TouchableOpacity>
+                        <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={[styles.headerTitle, { fontFamily: "HelvetIns", fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
+                        </View>
+                        <TouchableOpacity>
+                          <View>
+                            <EvilIcons name="bell" size={40} color="white" />
+                            <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </>
+            }
+            else{
+              return null;
+            }
+          }
         }}
       >
         <Tabs.Screen
           name="index"
           options={{
             title: 'Home',
+            // headerStyle: styles.headerStyle,
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="home" size={28} color={color} />
             ),
@@ -125,6 +174,26 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  headerStyle: {
+    height: 80,
+    backgroundColor: '#1E90FF',
+  },
+  headerTop: {
+    width: '100%',
+    paddingHorizontal: 20,
+
+  },
+  headerContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerTitle: {
+    fontSize: 25,
+    fontWeight: '600',
+    color: 'white'
   },
 });
 

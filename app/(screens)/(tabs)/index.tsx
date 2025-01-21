@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5, MaterialIcons, EvilIcons, FontAwesome } from '@
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { useRouter } from 'expo-router';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+
 // data image
 const slides = [
   {

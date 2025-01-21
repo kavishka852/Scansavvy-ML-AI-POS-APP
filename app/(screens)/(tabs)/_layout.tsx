@@ -1,11 +1,13 @@
-import { View, StyleSheet, Dimensions, Text, Pressable, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { View, StyleSheet, Dimensions, Text, Pressable, TouchableOpacity,Animated } from 'react-native';
+import React, { useEffect, useRef } from 'react';
 import { Tabs } from 'expo-router';
 import { AntDesign, EvilIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { getHeaderTitle, HeaderTitle } from '@react-navigation/elements';
 import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import Signup from '../Signup';
 // const MyHeader = ({ title, style }: any) => {
 //   console.warn(title);
 //   return <View style={style}>
@@ -13,6 +15,17 @@ import { useFonts } from 'expo-font';
 //   </View>
 // }
 
+// Menu drower
+const DrawerNavigator = () => {
+  const Drawer = createDrawerNavigator();
+
+  return (
+    <Drawer.Navigator screenOptions={{headerShown:false}}>
+      <Drawer.Screen name="Home" component={TabRootLayout} />
+      <Drawer.Screen name="Signup" component={Signup} />
+    </Drawer.Navigator>
+  );
+};
 const TabRootLayout = () => {
   const [fontsLoaded, fontError] = useFonts({
     HelvetIns: require("../../../assets/fonts/HelvetIns.ttf"),
@@ -22,6 +35,32 @@ const TabRootLayout = () => {
   });
   const { width } = Dimensions.get('window');
   const heightHeader = Constants.statusBarHeight + 55;
+  const translation = useRef(new Animated.Value(0)).current;
+  const Drawer = createDrawerNavigator();
+  
+
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([ 
+        Animated.timing(translation, {
+          toValue: 60, // chiều cao của nút qrcode
+          duration: 1000,
+          useNativeDriver: false,
+        }),
+        Animated.timing(translation, {
+          toValue: 1, // bắt đầu từ 0 đến 60
+          duration: 1000, // số giây
+          useNativeDriver: false,
+        }),
+      ])
+    );
+    animation.start(); // chạy cái function animation
+
+    // xoá animation sau khi chạy xong ->"unmount"
+    return () => animation.stop();
+  }, [translation]); // Nếu translation thay đổi , thì nó sẽ chạy lại animation
+
   return (
     <>
       <Tabs
@@ -54,7 +93,7 @@ const TabRootLayout = () => {
                   <View style={styles.headerTop}>
                     <View>
                       <View style={styles.headerContent}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={({}) => navigation.dispatch(DrawerActions.openDrawer())}>
                           <Ionicons name="filter" size={30} color="white" />
                         </TouchableOpacity>
                         <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -111,6 +150,18 @@ const TabRootLayout = () => {
                 ]}
               >
                 <AntDesign name="qrcode" size={36} color="white" />
+                <Animated.View
+                  style={[
+                    {
+                      position: "absolute",
+                      right: 5,
+                      width: 55,
+                      height: 2,
+                      backgroundColor: "white",
+                    },
+                    { top: translation },
+                  ]}
+                ></Animated.View>
               </Pressable>
             ),
             tabBarLabel: () => null, // Hide label for QR Code
@@ -197,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TabRootLayout;
+export default DrawerNavigator;

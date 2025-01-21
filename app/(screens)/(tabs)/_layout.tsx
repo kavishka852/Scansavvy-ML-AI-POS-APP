@@ -1,11 +1,13 @@
-import { View, StyleSheet, Dimensions, Text, Pressable, TouchableOpacity,Animated } from 'react-native';
-import React, { useEffect, useRef } from 'react';
-import { Tabs } from 'expo-router';
-import { AntDesign, EvilIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, StyleSheet, Dimensions, Text, Pressable, TouchableOpacity, Animated, Image } from 'react-native';
+import React, { useState, useRef, useEffect } from "react";
+import { Tabs, useRouter } from "expo-router";
+import { AntDesign, Entypo, EvilIcons, FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Svg, Path } from "react-native-svg";
+import { height, scale } from "react-native-size-scaling";
 import { getHeaderTitle, HeaderTitle } from '@react-navigation/elements';
 import Constants from 'expo-constants';
 import { useFonts } from 'expo-font';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Signup from '../Signup';
 // const MyHeader = ({ title, style }: any) => {
@@ -20,46 +22,105 @@ const DrawerNavigator = () => {
   const Drawer = createDrawerNavigator();
 
   return (
-    <Drawer.Navigator screenOptions={{headerShown:false}}>
+    <Drawer.Navigator screenOptions={{ headerShown: false }}>
       <Drawer.Screen name="Home" component={TabRootLayout} />
       <Drawer.Screen name="Signup" component={Signup} />
     </Drawer.Navigator>
   );
 };
+
+// Custom Drawer Navigator
+const CustomDrawerContent = (props: any) => {
+  const { state, navigation } = props
+  return (
+    <View style={{ flex: 1, height: '100%' }}>
+      <DrawerContentScrollView {...props}>
+        {/* <DrawerItemList {...props} /> */}
+        <View style={{ width: '100%', height: '100%', flex: 1 }}>
+          {/* header top */}
+          <View style={{ width: '100%', paddingVertical: 30, paddingHorizontal: 20, borderBottomColor: '#F5F4F4', borderBottomWidth: 1 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+              <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={require('../../../assets/images/avatar/1.png')} style={{ width: 70, height: 70, borderRadius: 35 }} />
+              </View>
+              <View style={{ paddingTop: 10 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Kavishka Roshan</Text>
+                <Text style={{ fontSize: 14, fontWeight: '400', color: 'black' }}>Web Developer</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* menu */}
+          <View style={{ flex: 1, height: '100%' }}>
+            {
+              props.state.routes.map((route: any, index: any) => {
+                const { drawerIcon, drawerLabel } = props.descriptors[route.key].options;
+                const focused = index === props.state.index;
+                //console.warn(route.name)
+                return (
+                  <TouchableOpacity
+                    key={route.key}
+                    style={{
+                      width: '100%', paddingVertical: 10, paddingHorizontal: 20, flexDirection: 'row', alignContent: 'center'
+
+                    }}
+                    onPress={() => navigation.navigate(route.name)}
+                  >
+                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                      {
+                        drawerIcon && drawerIcon({ focused, color: focused ? '#fff' : '#1E90FF', size: 30 })
+                      }
+                      {
+                        drawerLabel && drawerLabel({ focused, color: 'black' })
+                      }
+                    </View>
+                  </TouchableOpacity>
+                )
+              })
+            }
+          </View>
+        </View>
+      </DrawerContentScrollView>
+      <View style={{ padding: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontSize: 14, color: 'black' }}>Travel App, Version 1.0.1</Text>
+      </View>
+    </View>
+  );
+}
+
 const TabRootLayout = () => {
   const [fontsLoaded, fontError] = useFonts({
     HelvetIns: require("../../../assets/fonts/HelvetIns.ttf"),
     PlaywriteNL: require("../../../assets/fonts/Playwrite_NL/Playwrite-NL.ttf"),
     Montserrat: require("../../../assets/fonts/Montserrat/static/Montserrat-Regular.ttf"),
-  
+
   });
   const { width } = Dimensions.get('window');
   const heightHeader = Constants.statusBarHeight + 55;
   const translation = useRef(new Animated.Value(0)).current;
   const Drawer = createDrawerNavigator();
-  
+
 
 
   useEffect(() => {
     const animation = Animated.loop(
-      Animated.sequence([ 
+      Animated.sequence([
         Animated.timing(translation, {
-          toValue: 60, // chiều cao của nút qrcode
+          toValue: 60,
           duration: 1000,
           useNativeDriver: false,
         }),
         Animated.timing(translation, {
-          toValue: 1, // bắt đầu từ 0 đến 60
-          duration: 1000, // số giây
+          toValue: 1,
+          duration: 1000, 
           useNativeDriver: false,
         }),
       ])
     );
-    animation.start(); // chạy cái function animation
+    animation.start(); 
 
-    // xoá animation sau khi chạy xong ->"unmount"
     return () => animation.stop();
-  }, [translation]); // Nếu translation thay đổi , thì nó sẽ chạy lại animation
+  }, [translation]); 
 
   return (
     <>
@@ -93,7 +154,7 @@ const TabRootLayout = () => {
                   <View style={styles.headerTop}>
                     <View>
                       <View style={styles.headerContent}>
-                        <TouchableOpacity onPress={({}) => navigation.dispatch(DrawerActions.openDrawer())}>
+                        <TouchableOpacity onPress={({ }) => navigation.dispatch(DrawerActions.openDrawer())}>
                           <Ionicons name="filter" size={30} color="white" />
                         </TouchableOpacity>
                         <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -113,7 +174,7 @@ const TabRootLayout = () => {
                 </View>
               </>
             }
-            else{
+            else {
               return null;
             }
           }
@@ -196,6 +257,261 @@ const TabRootLayout = () => {
   );
 };
 
+
+const MyDrawerApp = () => {
+  const router = useRouter();
+  const navigation = useNavigation();
+  const Drawer = createDrawerNavigator();
+  return (
+    <Drawer.Navigator screenOptions={{
+      headerShown: false,
+      drawerActiveTintColor: "white",
+      drawerInactiveTintColor: "white",
+      drawerActiveBackgroundColor: "green",
+      drawerInactiveBackgroundColor: "transparent",
+      drawerStyle: { backgroundColor: "white", width: 300, height: "100%", padding: 0, margin: 0 },
+    }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      {/* 
+        viết layout cho menu tại đây
+        Chú ý chúng ta dùng component={TabRootLayout}  để có bottom tabs ở bên dưới screen
+      */}
+      <Drawer.Screen name="Home" component={TabRootLayout}
+        options={{
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <MaterialCommunityIcons name="home-outline" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Home</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+      <Drawer.Screen name="collections" component={TabRootLayout}
+        options={{
+          headerShown: false,
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <MaterialIcons name="collections" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Collections</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+      <Drawer.Screen name="cart" component={TabRootLayout}
+        options={{
+          headerShown: false,
+          headerTitle: "Carts",
+          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Ionicons name="filter" size={30} color="black" />
+          </TouchableOpacity>,
+
+          headerRight: () => <TouchableOpacity style={{ paddingHorizontal: 20 }}>
+            <AntDesign name="message1" size={24} color="black" />
+          </TouchableOpacity>,
+
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+
+                <Ionicons name="cart" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Carts</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+      <Drawer.Screen name="news" component={TabRootLayout}
+        options={{
+          headerShown: false,
+          headerTitle: "News",
+          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Ionicons name="filter" size={30} color="black" />
+          </TouchableOpacity>,
+
+          headerRight: () => <TouchableOpacity style={{ paddingHorizontal: 20 }}>
+            <AntDesign name="search1" size={24} color="black" />
+          </TouchableOpacity>,
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <MaterialIcons name="receipt" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>News</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+      <Drawer.Screen name="wishLists" component={TabRootLayout}
+        options={{
+          headerShown: false,
+          headerTitle: "Travel Wishlist",
+          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Ionicons name="filter" size={30} color="black" />
+          </TouchableOpacity>,
+
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <FontAwesome name="heart" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Travel
+                    Wishlist</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+
+      <Drawer.Screen name="RecentlyViewed" component={TabRootLayout}
+        options={{
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <Ionicons name="eye" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Recently Viewed</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+
+      <Drawer.Screen name="MyAccount" component={TabRootLayout}
+        options={{
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <Ionicons name="person" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>My Account </Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+      <Drawer.Screen name="Shipping" component={TabRootLayout}
+        options={{
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <MaterialIcons name="local-shipping" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Shipping</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+
+      <Drawer.Screen name="About" component={TabRootLayout}
+        options={{
+          drawerIcon: ({ focused, color, size }) => {
+            return (
+              <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
+                <Entypo name="info" size={size} color={color} />
+              </View>
+            )
+          },
+          drawerLabel: ({ focused, color }) => {
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>About</Text>
+                  <Entypo name="chevron-right" size={16} color={color} />
+                </View>
+              </View>
+            )
+          }
+        }}
+      />
+      <Drawer.Screen name="register" component={Signup} />
+
+    </Drawer.Navigator>
+  );
+}
+
+
+
 const styles = StyleSheet.create({
   qrCodeButton: {
     justifyContent: 'center',
@@ -248,4 +564,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DrawerNavigator;
+//export default TabRootLayout;
+export default MyDrawerApp;

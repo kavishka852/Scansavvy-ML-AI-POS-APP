@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5, MaterialIcons, EvilIcons, FontAwesome } from '@
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { useRouter } from 'expo-router';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+
 // data image
 const slides = [
   {
@@ -114,19 +115,19 @@ const HomeScreens = () => {
         <View style={{ width: '100%', padding: 20 }}>
           {/* Title */}
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-            <FontAwesome5 name="shopping-cart" size={20} color="green" />
+            <FontAwesome5 name="shopping-cart" size={20} color="#1E90FF" />
             <Text style={{ fontWeight: 'bold', fontSize: 16, paddingLeft: 10 }}>Our Services</Text>
           </View>
 
           {/* Icons and Text */}
           <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             {[
-              { icon: <FontAwesome name="qrcode" size={30} color="green" />, label: 'QR & Barcode Scanning' },
-              { icon: <FontAwesome name="dollar" size={30} color="green" />, label: 'Price Comparison' },
-              { icon: <FontAwesome name="camera" size={30} color="green" />, label: 'Image Recognition' },
-              { icon: <FontAwesome5 name="bell" size={30} color="green" />, label: 'Stock Alerts' },
-              { icon: <FontAwesome name="heart" size={30} color="green" />, label: 'Recommendations' },
-              { icon: <MaterialIcons name="store" size={30} color="green" />, label: 'Inventory Management' },
+              { icon: <FontAwesome name="qrcode" size={30} color="#1E90FF" />, label: 'QR & Barcode Scanning' },
+              { icon: <FontAwesome name="dollar" size={30} color="#1E90FF" />, label: 'Price Comparison' },
+              { icon: <FontAwesome name="camera" size={30} color="#1E90FF" />, label: 'Image Recognition' },
+              { icon: <FontAwesome5 name="bell" size={30} color="#1E90FF" />, label: 'Stock Alerts' },
+              { icon: <FontAwesome name="heart" size={30} color="#1E90FF" />, label: 'Recommendations' },
+              { icon: <MaterialIcons name="store" size={30} color="#1E90FF" />, label: 'Inventory Management' },
             ].map((item, index) => (
               <TouchableOpacity
                 key={index}
@@ -169,7 +170,7 @@ const HomeScreens = () => {
 
         <View style={{ width: '100%', paddingHorizontal: 10 }}>
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10 }}>
-            <FontAwesome name="plane" size={30} color="green" />
+            <FontAwesome name="plane" size={30} color="#1E90FF" />
             <Text style={{ fontWeight: 'bold', fontSize: 16, paddingVertical: 20, paddingLeft: 10, textTransform: 'capitalize' }}>PC 2024 (hot)</Text>
           </View>
           <View style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>

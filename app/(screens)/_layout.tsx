@@ -9,6 +9,10 @@ const RootLayout = () => {
       <Stack.Screen name="Login" options={{ headerShown: false }} /> 
       <Stack.Screen name="Signup" options={{ headerShown: false }} /> 
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="wishList" options={{ headerShown: false}}/>
+      <Stack.Screen name="cart" options={{ headerShown: false}}/>
+      <Stack.Screen name="news" options={{ headerShown: false}}/>
+      <Stack.Screen name="newsDetail" options={{ headerShown: false}}/>
     </Stack>
   );
 };

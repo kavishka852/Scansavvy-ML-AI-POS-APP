@@ -10,6 +10,12 @@ import { useFonts } from 'expo-font';
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Signup from '../Signup';
+import WishListScreen from '../wishList';
+import CartScreen from '../cart';
+import NewsScreen from '../news';
+import MyAccountScreen from '../userAcoount';
+import aboutScrenn from '../about';
+import CollectionScreen from '../collection';
 // const MyHeader = ({ title, style }: any) => {
 //   console.warn(title);
 //   return <View style={style}>
@@ -24,6 +30,7 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator screenOptions={{ headerShown: false }}>
       <Drawer.Screen name="Home" component={TabRootLayout} />
+      <Drawer.Screen name="wishLists" component={WishListScreen} />
       <Drawer.Screen name="Signup" component={Signup} />
     </Drawer.Navigator>
   );
@@ -82,7 +89,7 @@ const CustomDrawerContent = (props: any) => {
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ fontSize: 14, color: 'black' }}>Travel App, Version 1.0.1</Text>
+        <Text style={{ fontSize: 14, color: 'black' }}>ScanSavvy App, Version 1.0.0</Text>
       </View>
     </View>
   );
@@ -112,15 +119,15 @@ const TabRootLayout = () => {
         }),
         Animated.timing(translation, {
           toValue: 1,
-          duration: 1000, 
+          duration: 1000,
           useNativeDriver: false,
         }),
       ])
     );
-    animation.start(); 
+    animation.start();
 
     return () => animation.stop();
-  }, [translation]); 
+  }, [translation]);
 
   return (
     <>
@@ -158,7 +165,85 @@ const TabRootLayout = () => {
                           <Ionicons name="filter" size={30} color="white" />
                         </TouchableOpacity>
                         <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                          <Text style={[styles.headerTitle, { fontFamily: "HelvetIns", fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
+                          <Text style={[styles.headerTitle, { fontFamily: "Montserrat", fontWeight: 'bold', fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
+                        </View>
+                        <TouchableOpacity>
+                          <View>
+                            <EvilIcons name="bell" size={40} color="white" />
+                            <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </>
+            }
+            else if (title === "Favourites") {
+              return <>
+                <View style={{ width: '100%', height: heightHeader, backgroundColor: "#1E90FF", paddingTop: Constants.statusBarHeight }}>
+                  <View style={styles.headerTop}>
+                    <View>
+                      <View style={styles.headerContent}>
+                        <TouchableOpacity onPress={({ }) => navigation.dispatch(DrawerActions.openDrawer())}>
+                          <Ionicons name="filter" size={30} color="white" />
+                        </TouchableOpacity>
+                        <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={[styles.headerTitle, { fontFamily: "Montserrat", fontWeight: 'bold', fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
+                        </View>
+                        <TouchableOpacity>
+                          <View>
+                            <EvilIcons name="bell" size={40} color="white" />
+                            <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </>
+            }
+            else if (title === "Notifications") {
+              return <>
+                <View style={{ width: '100%', height: heightHeader, backgroundColor: "#1E90FF", paddingTop: Constants.statusBarHeight }}>
+                  <View style={styles.headerTop}>
+                    <View>
+                      <View style={styles.headerContent}>
+                        <TouchableOpacity onPress={({ }) => navigation.dispatch(DrawerActions.openDrawer())}>
+                          <Ionicons name="filter" size={30} color="white" />
+                        </TouchableOpacity>
+                        <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={[styles.headerTitle, { fontFamily: "Montserrat", fontWeight: 'bold', fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
+                        </View>
+                        <TouchableOpacity>
+                          <View>
+                            <EvilIcons name="bell" size={40} color="white" />
+                            <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </>
+            }
+            else if (title === "Settings") {
+              return <>
+                <View style={{ width: '100%', height: heightHeader, backgroundColor: "#1E90FF", paddingTop: Constants.statusBarHeight }}>
+                  <View style={styles.headerTop}>
+                    <View>
+                      <View style={styles.headerContent}>
+                        <TouchableOpacity onPress={({ }) => navigation.dispatch(DrawerActions.openDrawer())}>
+                          <Ionicons name="filter" size={30} color="white" />
+                        </TouchableOpacity>
+                        <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={[styles.headerTitle, { fontFamily: "Montserrat", fontWeight: 'bold', fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
                         </View>
                         <TouchableOpacity>
                           <View>
@@ -299,7 +384,7 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="collections" component={TabRootLayout}
+      <Drawer.Screen name="collections" component={CollectionScreen}
         options={{
           headerShown: false,
           drawerIcon: ({ focused, color, size }) => {
@@ -322,13 +407,13 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="cart" component={TabRootLayout}
+      <Drawer.Screen name="cart" component={CartScreen}
         options={{
-          headerShown: false,
-          headerTitle: "Carts",
-          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Ionicons name="filter" size={30} color="black" />
-          </TouchableOpacity>,
+          headerShown: true,
+          headerTitle: "Cart",
+          // headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          //   <Ionicons name="filter" size={30} color="black" />
+          // </TouchableOpacity>,
 
           headerRight: () => <TouchableOpacity style={{ paddingHorizontal: 20 }}>
             <AntDesign name="message1" size={24} color="black" />
@@ -356,13 +441,13 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="news" component={TabRootLayout}
+      <Drawer.Screen name="news" component={NewsScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
           headerTitle: "News",
-          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Ionicons name="filter" size={30} color="black" />
-          </TouchableOpacity>,
+          // headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          //   <Ionicons name="filter" size={30} color="black" />
+          // </TouchableOpacity>,
 
           headerRight: () => <TouchableOpacity style={{ paddingHorizontal: 20 }}>
             <AntDesign name="search1" size={24} color="black" />
@@ -387,13 +472,14 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="wishLists" component={TabRootLayout}
+      <Drawer.Screen name="wishLists" component={WishListScreen}
         options={{
-          headerShown: false,
-          headerTitle: "Travel Wishlist",
-          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Ionicons name="filter" size={30} color="black" />
-          </TouchableOpacity>,
+          headerShown: true,
+          title: 'wishLists',
+          headerTitle: "My Wishlist",
+          // headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          //   <Ionicons name="filter" size={30} color="black" />
+          // </TouchableOpacity>,
 
           drawerIcon: ({ focused, color, size }) => {
             return (
@@ -406,7 +492,7 @@ const MyDrawerApp = () => {
             return (
               <View style={{ flex: 1 }}>
                 <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Travel
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>My
                     Wishlist</Text>
                   <Entypo name="chevron-right" size={16} color={color} />
                 </View>
@@ -440,8 +526,11 @@ const MyDrawerApp = () => {
       />
 
 
-      <Drawer.Screen name="MyAccount" component={TabRootLayout}
+      <Drawer.Screen name="userAcoount" component={MyAccountScreen}
         options={{
+          headerShown: true,
+          title: 'userAcoount',
+          headerTitle: "My Account",
           drawerIcon: ({ focused, color, size }) => {
             return (
               <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
@@ -461,6 +550,7 @@ const MyDrawerApp = () => {
           }
         }}
       />
+
       <Drawer.Screen name="Shipping" component={TabRootLayout}
         options={{
           drawerIcon: ({ focused, color, size }) => {
@@ -483,8 +573,11 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="About" component={TabRootLayout}
+      <Drawer.Screen name="About" component={aboutScrenn}
         options={{
+          headerShown: true,
+          title: 'About',
+          headerTitle: "About App",
           drawerIcon: ({ focused, color, size }) => {
             return (
               <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>

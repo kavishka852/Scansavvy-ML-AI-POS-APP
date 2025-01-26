@@ -13,6 +13,10 @@ const RootLayout = () => {
       <Stack.Screen name="cart" options={{ headerShown: false}}/>
       <Stack.Screen name="news" options={{ headerShown: false}}/>
       <Stack.Screen name="newsDetail" options={{ headerShown: false}}/>
+      <Stack.Screen name="userAcoount" options={{ headerShown: false}}/>
+      <Stack.Screen name="profile" options={{ headerShown: false}}/>
+      <Stack.Screen name="about" options={{ headerShown: false}}/>
+      <Stack.Screen name="collection" options={{ headerShown: false}}/>
     </Stack>
   );
 };

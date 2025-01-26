@@ -13,6 +13,9 @@ import Signup from '../Signup';
 import WishListScreen from '../wishList';
 import CartScreen from '../cart';
 import NewsScreen from '../news';
+import MyAccountScreen from '../userAcoount';
+import aboutScrenn from '../about';
+import CollectionScreen from '../collection';
 // const MyHeader = ({ title, style }: any) => {
 //   console.warn(title);
 //   return <View style={style}>
@@ -381,7 +384,7 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="collections" component={TabRootLayout}
+      <Drawer.Screen name="collections" component={CollectionScreen}
         options={{
           headerShown: false,
           drawerIcon: ({ focused, color, size }) => {
@@ -408,9 +411,9 @@ const MyDrawerApp = () => {
         options={{
           headerShown: true,
           headerTitle: "Cart",
-          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Ionicons name="filter" size={30} color="black" />
-          </TouchableOpacity>,
+          // headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          //   <Ionicons name="filter" size={30} color="black" />
+          // </TouchableOpacity>,
 
           headerRight: () => <TouchableOpacity style={{ paddingHorizontal: 20 }}>
             <AntDesign name="message1" size={24} color="black" />
@@ -442,9 +445,9 @@ const MyDrawerApp = () => {
         options={{
           headerShown: true,
           headerTitle: "News",
-          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Ionicons name="filter" size={30} color="black" />
-          </TouchableOpacity>,
+          // headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          //   <Ionicons name="filter" size={30} color="black" />
+          // </TouchableOpacity>,
 
           headerRight: () => <TouchableOpacity style={{ paddingHorizontal: 20 }}>
             <AntDesign name="search1" size={24} color="black" />
@@ -474,9 +477,9 @@ const MyDrawerApp = () => {
           headerShown: true,
           title: 'wishLists',
           headerTitle: "My Wishlist",
-          headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Ionicons name="filter" size={30} color="black" />
-          </TouchableOpacity>,
+          // headerLeft: () => <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          //   <Ionicons name="filter" size={30} color="black" />
+          // </TouchableOpacity>,
 
           drawerIcon: ({ focused, color, size }) => {
             return (
@@ -523,8 +526,11 @@ const MyDrawerApp = () => {
       />
 
 
-      <Drawer.Screen name="MyAccount" component={TabRootLayout}
+      <Drawer.Screen name="userAcoount" component={MyAccountScreen}
         options={{
+          headerShown: true,
+          title: 'userAcoount',
+          headerTitle: "My Account",
           drawerIcon: ({ focused, color, size }) => {
             return (
               <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
@@ -544,6 +550,7 @@ const MyDrawerApp = () => {
           }
         }}
       />
+
       <Drawer.Screen name="Shipping" component={TabRootLayout}
         options={{
           drawerIcon: ({ focused, color, size }) => {
@@ -566,8 +573,11 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="About" component={TabRootLayout}
+      <Drawer.Screen name="About" component={aboutScrenn}
         options={{
+          headerShown: true,
+          title: 'About',
+          headerTitle: "About App",
           drawerIcon: ({ focused, color, size }) => {
             return (
               <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>

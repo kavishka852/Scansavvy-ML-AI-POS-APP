@@ -5,6 +5,7 @@ import { Ionicons, FontAwesome5, MaterialIcons, EvilIcons, FontAwesome } from '@
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import { useRouter } from 'expo-router';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import DiscountBanner from '@/components/Scansavy_Prop/discount';
 
 // data image
 const slides = [
@@ -48,6 +49,7 @@ const HomeScreens = () => {
   }
 
   return (
+
     <SafeAreaView style={styles.box}>
       <ScrollView style={styles.container}>
         {/* {header} */}
@@ -71,7 +73,11 @@ const HomeScreens = () => {
             </View>
           </View>
         </View> */}
-
+        <DiscountBanner
+          discount="20% OFF"
+          description="on your first order"
+          code="WELCOME KAVISHKA"
+        />
 
         {/* {Search product} */}
         <View style={styles.boxSearch}>
@@ -122,12 +128,14 @@ const HomeScreens = () => {
           {/* Icons and Text */}
           <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             {[
-              { icon: <FontAwesome name="qrcode" size={30} color="#1E90FF" />, label: 'QR & Barcode Scanning' },
-              { icon: <FontAwesome name="dollar" size={30} color="#1E90FF" />, label: 'Price Comparison' },
-              { icon: <FontAwesome name="camera" size={30} color="#1E90FF" />, label: 'Image Recognition' },
-              { icon: <FontAwesome5 name="bell" size={30} color="#1E90FF" />, label: 'Stock Alerts' },
-              { icon: <FontAwesome name="heart" size={30} color="#1E90FF" />, label: 'Recommendations' },
-              { icon: <MaterialIcons name="store" size={30} color="#1E90FF" />, label: 'Inventory Management' },
+              { icon: <FontAwesome name="qrcode" size={30} color="#1E90FF" />, label: 'Smart QR Scanner' },
+              { icon: <FontAwesome name="camera" size={30} color="#1E90FF" />, label: 'Instant Image Capture' },
+              { icon: <FontAwesome5 name="bell" size={30} color="#1E90FF" />, label: 'Stock Release Alerts' },
+              { icon: <FontAwesome name="heart" size={30} color="#1E90FF" />, label: 'Recommend Alerts' },
+              { icon: <FontAwesome name="gift" size={30} color="#1E90FF" />, label: 'Exclusive Deals Today' },
+              { icon: <FontAwesome name="shopping-cart" size={30} color="#1E90FF" />, label: 'Pick your item' },
+              // { icon: <FontAwesome name="dollar" size={30} color="#1E90FF" />, label: 'Price Comparison' },
+              // { icon: <MaterialIcons name="store" size={30} color="#1E90FF" />, label: 'Inventory Management' },
             ].map((item, index) => (
               <TouchableOpacity
                 key={index}
@@ -174,63 +182,179 @@ const HomeScreens = () => {
             <Text style={{ fontWeight: 'bold', fontSize: 16, paddingVertical: 20, paddingLeft: 10, textTransform: 'capitalize' }}>PC 2024 (hot)</Text>
           </View>
           <View style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-            <TouchableOpacity style={{ width: '50%', padding: 10 }}>
-              <View style={{ width: '100%', backgroundColor: '#F4F4F4', borderRadius: 10 }}>
-                <Image source={require("../../../assets/images/PC/7.jpg")} style={{ width: '100%', height: 120, borderTopRightRadius: 10, borderTopLeftRadius: 10 }} />
-                <View style={{ width: '100%', paddingHorizontal: 20 }}>
-
-                  <Text style={{ fontSize: 16, paddingTop: 15, textAlign: 'left', fontWeight: 'bold', height: 65 }}>Đảo Tuần Châu</Text>
-                  <View style={{ paddingTop: 5, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                    <Text style={{ fontSize: 14 }}>4,4</Text>
-                    <FontAwesome name="star" size={16} color="orange" />
-                    <Text style={{ fontSize: 14 }}>(1,3N)</Text>
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => router.push('/(screens)/productDetails')}
+            >
+              <View style={styles.card}>
+                {/* Product Image */}
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require("../../../assets/images/PC/Assus rog.png")}
+                    style={styles.image}
+                  />
+                  <View style={styles.discountBadge}>
+                    <Text style={styles.discountText}>12% OFF</Text>
                   </View>
-                  <Text style={{ fontSize: 14, paddingVertical: 15 }} numberOfLines={1}>Đảo</Text>
+                </View>
+
+                {/* Product Details */}
+                <View style={styles.detailsContainer}>
+                  {/* Title */}
+                  <Text numberOfLines={2} style={styles.title}>
+                    ASUS ROG STRIX G16 2024 G614JIR I9 14TH GEN RTX 4070
+                  </Text>
+
+                  {/* Price and Rating Section */}
+                  <View style={styles.priceRatingContainer}>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.currentPrice}>Rs. 700,000</Text>
+                      <Text style={styles.originalPrice}>Rs. 799,999</Text>
+                    </View>
+
+                    <View style={styles.ratingContainer}>
+                      <FontAwesome name="star" size={16} color="#F59E0B" />
+                      <Text style={styles.ratingText}>4.5</Text>
+                    </View>
+                  </View>
+
+                  {/* Category and Stock */}
+                  <View style={styles.bottomContainer}>
+                    <Text style={styles.categoryText}>Laptop</Text>
+                    <Text style={styles.stockText}>In Stock</Text>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '50%', padding: 10 }}>
-              <View style={{ width: '100%', backgroundColor: '#F4F4F4', borderRadius: 10 }}>
-                <Image source={require("../../../assets/images/PC/8.jpg")} style={{ width: '100%', height: 120, borderTopRightRadius: 10, borderTopLeftRadius: 10 }} />
-                <View style={{ width: '100%', paddingHorizontal: 20 }}>
-
-                  <Text style={{ fontSize: 16, paddingTop: 15, textAlign: 'left', fontWeight: 'bold', height: 65 }}>Vịnh Bái Tử Long</Text>
-                  <View style={{ paddingTop: 5, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                    <Text style={{ fontSize: 14 }}>4,4</Text>
-                    <FontAwesome name="star" size={16} color="orange" />
-                    <Text style={{ fontSize: 14 }}>(1,3N)</Text>
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => router.push('/(screens)/productDetails')}
+            >
+              <View style={styles.card}>
+                {/* Product Image */}
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require("../../../assets/images/PC/MSI thin.png")}
+                    style={styles.image}
+                  />
+                  <View style={styles.discountBadge}>
+                    <Text style={styles.discountText}>15% OFF</Text>
                   </View>
-                  <Text style={{ fontSize: 14, paddingVertical: 15 }} numberOfLines={1}>Vịnh</Text>
+                </View>
+
+                {/* Product Details */}
+                <View style={styles.detailsContainer}>
+                  {/* Title */}
+                  <Text numberOfLines={2} style={styles.title}>
+                    MSI THIN 15 B12UC I5 12TH GEN RTX 3050
+                  </Text>
+
+                  {/* Price and Rating Section */}
+                  <View style={styles.priceRatingContainer}>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.currentPrice}>Rs. 259,000</Text>
+                      <Text style={styles.originalPrice}>Rs. 265,999</Text>
+                    </View>
+
+                    <View style={styles.ratingContainer}>
+                      <FontAwesome name="star" size={16} color="#F59E0B" />
+                      <Text style={styles.ratingText}>4.3</Text>
+                    </View>
+                  </View>
+
+                  {/* Category and Stock */}
+                  <View style={styles.bottomContainer}>
+                    <Text style={styles.categoryText}>Laptop</Text>
+                    <Text style={styles.stockText}>In Stock</Text>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '50%', padding: 10 }}>
-              <View style={{ width: '100%', backgroundColor: '#F4F4F4', borderRadius: 10 }}>
-                <Image source={require("../../../assets/images/PC/9.jpg")} style={{ width: '100%', height: 120, borderTopRightRadius: 10, borderTopLeftRadius: 10 }} />
-                <View style={{ width: '100%', paddingHorizontal: 20 }}>
-
-                  <Text style={{ fontSize: 16, paddingTop: 15, textAlign: 'left', fontWeight: 'bold', height: 65 }}>Bải Biển Hạ Long</Text>
-                  <View style={{ paddingTop: 5, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                    <Text style={{ fontSize: 14 }}>4,4</Text>
-                    <FontAwesome name="star" size={16} color="orange" />
-                    <Text style={{ fontSize: 14 }}>(1,3N)</Text>
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => router.push('/(screens)/productDetails')}
+            >
+              <View style={styles.card}>
+                {/* Product Image */}
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require("../../../assets/images/PC/Vievsonic.png")}
+                    style={styles.image}
+                  />
+                  <View style={styles.discountBadge}>
+                    <Text style={styles.discountText}>10% OFF</Text>
                   </View>
-                  <Text style={{ fontSize: 14, paddingVertical: 15 }} numberOfLines={1}>Điểm thu hút khách nước ngoài</Text>
+                </View>
+
+                {/* Product Details */}
+                <View style={styles.detailsContainer}>
+                  {/* Title */}
+                  <Text numberOfLines={2} style={styles.title}>
+                    Viewsonic OMNI VX2479-HD-PRO 24” 165Hz Gaming Monitor
+                  </Text>
+
+                  {/* Price and Rating Section */}
+                  <View style={styles.priceRatingContainer}>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.currentPrice}>Rs. 49,000</Text>
+                      <Text style={styles.originalPrice}>Rs. 55,999</Text>
+                    </View>
+
+                    <View style={styles.ratingContainer}>
+                      <FontAwesome name="star" size={16} color="#F59E0B" />
+                      <Text style={styles.ratingText}>4.3</Text>
+                    </View>
+                  </View>
+
+                  {/* Category and Stock */}
+                  <View style={styles.bottomContainer}>
+                    <Text style={styles.categoryText}>Monitor</Text>
+                    <Text style={styles.stockText}>In Stock</Text>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '50%', padding: 10 }}>
-              <View style={{ width: '100%', backgroundColor: '#F4F4F4', borderRadius: 10 }}>
-                <Image source={require("../../../assets/images/PC/10.jpg")} style={{ width: '100%', height: 120, borderTopRightRadius: 10, borderTopLeftRadius: 10 }} />
-                <View style={{ width: '100%', paddingHorizontal: 20 }}>
-
-                  <Text style={{ fontSize: 16, paddingTop: 15, textAlign: 'left', fontWeight: 'bold', height: 65 }}>Núi Bài Thơ</Text>
-                  <View style={{ paddingTop: 5, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                    <Text style={{ fontSize: 14 }}>4,4</Text>
-                    <FontAwesome name="star" size={16} color="orange" />
-                    <Text style={{ fontSize: 14 }}>(1,3N)</Text>
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => router.push('/(screens)/productDetails')}
+            >
+              <View style={styles.card}>
+                {/* Product Image */}
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require("../../../assets/images/PC/MSI modern monitor.png")}
+                    style={styles.image}
+                  />
+                  <View style={styles.discountBadge}>
+                    <Text style={styles.discountText}>13% OFF</Text>
                   </View>
-                  <Text style={{ fontSize: 14, paddingVertical: 15 }} numberOfLines={1}>Điểm thu hút khách nước ngoài</Text>
+                </View>
+
+                {/* Product Details */}
+                <View style={styles.detailsContainer}>
+                  {/* Title */}
+                  <Text numberOfLines={2} style={styles.title}>
+                    MSI Modern MD342CQP 34" UWQHD 120HZ Curved Monitor with PD 98W
+                  </Text>
+
+                  {/* Price and Rating Section */}
+                  <View style={styles.priceRatingContainer}>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.currentPrice}>Rs. 259,000</Text>
+                      <Text style={styles.originalPrice}>Rs. 265,999</Text>
+                    </View>
+
+                    <View style={styles.ratingContainer}>
+                      <FontAwesome name="star" size={16} color="#F59E0B" />
+                      <Text style={styles.ratingText}>4.3</Text>
+                    </View>
+                  </View>
+
+                  {/* Category and Stock */}
+                  <View style={styles.bottomContainer}>
+                    <Text style={styles.categoryText}>Monitor</Text>
+                    <Text style={styles.stockText}>In Stock</Text>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
@@ -283,7 +407,98 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat",
     letterSpacing: 2,
     lineHeight: 40
-  }
+  },
+  cardContainer: {
+    width: '50%',
+    padding: 8,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  imageContainer: {
+    position: 'relative',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: 120,
+    resizeMode: 'cover',
+  },
+  discountBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#EF4444',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+  },
+  discountText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  detailsContainer: {
+    padding: 12,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1F2937',
+    marginBottom: 8,
+    height: 44, // Approximately 2 lines
+  },
+  priceRatingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  priceContainer: {
+    flex: 1,
+  },
+  currentPrice: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1F2937',
+  },
+  originalPrice: {
+    fontSize: 14,
+    color: '#6B7280',
+    textDecorationLine: 'line-through',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  ratingText: {
+    fontSize: 14,
+    color: '#4B5563',
+    marginLeft: 4,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  categoryText: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  stockText: {
+    fontSize: 14,
+    color: '#059669',
+    fontWeight: '500',
+  },
 })
 
 export default HomeScreens

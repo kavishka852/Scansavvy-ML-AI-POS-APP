@@ -1,123 +1,76 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { router } from 'expo-router';
 import BackgroundTriangles from '@/components/Scansavy_Prop/BackgroundTriangles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Signup = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [errorMessage, setErrorMessage] = useState("");
-  // Validation function
-// Validation function
-const validateForm = () => {
-  let isValid = true;
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
-  // Clear previous errors
-  setEmailError('');
-  setPasswordError('');
-  setConfirmPasswordError('');
+  const [loading, setLoading] = useState(false);
 
-  // Email validation
-  if (!email || !/\S+@\S+\.\S+/.test(email)) {
-    setEmailError('Please enter a valid email address.');
-    isValid = false;
-  }
-
-  // Password validation
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;,.<>?/~`]).{8,}$/;
-  if (!password) {
-    setPasswordError('Password is required.');
-    isValid = false;
-  } else if (!passwordRegex.test(password)) {
-    setPasswordError('Password must be at least 8 characters long and contain letters, numbers, and special characters.');
-    isValid = false;
-  }
-
-  // Confirm password validation
-  if (password !== confirmPassword) {
-    setConfirmPasswordError('Passwords do not match.');
-    isValid = false;
-  }
-
-  return isValid;
-};
-
-  console.log({ name, email, password, confirmPassword });
-  // Handle form submission
   const handleSignup = async () => {
-    if (validateForm()) {
-      if (password !== confirmPassword) {
-        setErrorMessage("Passwords do not match");
-        return;
+    if (!fullName || !email || !password || !confirmPassword) {
+      Alert.alert('Error', 'All fields are required!');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email: email,
+          password: password,
+        }),
+      });
+
+      const result = await response.json();
+      console.log('Response:', result);
+      Alert.alert(result);
+      if (response.ok) {
+        Alert.alert('Success', 'User registered successfully!');
+        router.push('/(screens)/Login'); // Redirect to login page
+      } else {
+        Alert.alert('Error', result.message || 'Registration failed!');
       }
-
-      try {
-        console.log('Sending request...'); // Debugging line
-        const response = await fetch("http://192.168.0.200:5000/api/users/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,        // Include name in the request body
-            email,
-            password,
-            confirmPassword,
-          }),
-        });
-
-        const data = await response.json();
-        console.log(data); // Log the server response
-
-        if (response.ok) {
-          // Successfully created user
-          console.log({ name, email, password, confirmPassword });
-          alert("User created successfully!");
-          router.push("/(screens)/Login");
-        } else {
-          // Show an error message from the backend response or default message
-          setErrorMessage(data.error || "Error occurred during signup");
-        }
-      } catch (error) {
-        console.error(error);
-        setErrorMessage("An error occurred. Please try again.");
-      }
+    } catch (error) {
+      Alert.alert('Error', 'Unable to connect to the server. Please try again later.');
     }
   };
 
 
 
-
   return (
     <View style={styles.container}>
-      {/* Animated Background Elements */}
       <BackgroundTriangles />
 
-      {/* Title */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleRow1}>Create</Text>
         <Text style={styles.titleRow2}>Your Account</Text>
       </View>
 
-      {/* Full Name Input */}
       <TextInput
         style={styles.input}
         placeholder="Full Name"
         placeholderTextColor="#B0B0B0"
-        value={name}
-        onChangeText={setName}  // Set name state when the user types
+        value={fullName}
+        onChangeText={setFullName}
       />
 
-
-      {/* Email Input */}
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -126,10 +79,7 @@ const validateForm = () => {
         value={email}
         onChangeText={setEmail}
       />
-      {/* Display email error */}
-      {emailError && <Text style={styles.error}>{emailError}</Text>}
 
-      {/* Password Input with Show/Hide */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
@@ -150,10 +100,7 @@ const validateForm = () => {
           />
         </TouchableOpacity>
       </View>
-      {/* Display password error */}
-      {passwordError && <Text style={styles.error}>{passwordError}</Text>}
 
-      {/* Confirm Password Input with Show/Hide */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
@@ -174,17 +121,11 @@ const validateForm = () => {
           />
         </TouchableOpacity>
       </View>
-      {/* Display confirm password error */}
-      {confirmPasswordError && <Text style={styles.error}>{confirmPasswordError}</Text>}
 
-      {/* Sign Up Button */}
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={loading}>
+        <Text style={styles.buttonText}>{loading ? 'Signing Up...' : 'Sign Up'}</Text>
       </TouchableOpacity>
 
-      <Text> </Text>
-
-      {/* Social Login */}
       <Text>- OR Continue With -</Text>
       <View style={styles.socialContainer}>
         <TouchableOpacity style={[styles.socialButton, styles.googleButton]}>
@@ -197,7 +138,6 @@ const validateForm = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Link to Login Page */}
       <Text style={styles.link} onPress={() => router.push('/(screens)/Login')}>
         Already have an account? Login
       </Text>
@@ -220,12 +160,21 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 'bold',
     color: '#fff',
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 5,
+    fontFamily: 'sans-serif',
   },
   titleRow2: {
     fontSize: 50,
     fontWeight: 'bold',
     color: '#fff',
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 5,
+    fontFamily: 'sans-serif',
   },
+
   input: {
     width: '80%',
     borderWidth: 1,
@@ -236,6 +185,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 16,
     backgroundColor: '#fff',
+    elevation: 3,
   },
   passwordContainer: {
     width: '80%',
@@ -246,6 +196,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 20,
     backgroundColor: '#fff',
+    elevation: 3,
   },
   passwordInput: {
     flex: 1,
@@ -301,11 +252,6 @@ const styles = StyleSheet.create({
     color: '#6200EE',
     marginTop: 15,
     fontSize: 16,
-  },
-  error: {
-    color: 'red',
-    fontSize: 14,
-    marginBottom: 10,
   },
 });
 

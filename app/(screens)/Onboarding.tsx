@@ -5,8 +5,8 @@ import Svg, { Path } from 'react-native-svg';
 
 const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [fadeAnim] = useState(new Animated.Value(0)); // For fading in content
-  const [slideAnim] = useState(new Animated.Value(100)); // For sliding in content
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [slideAnim] = useState(new Animated.Value(100));
 
   const onboardingData = [
     {
@@ -33,55 +33,50 @@ const Onboarding = () => {
   };
 
   const handleGetStarted = () => {
-    // router.push('/(tabs)');
     router.push('/(screens)/Login');
   };
 
-  const fadeIn = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      easing: Easing.ease,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const slideIn = () => {
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 1000,
-      easing: Easing.ease,
-      useNativeDriver: true,
-    }).start();
+  const animateContent = () => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      })
+    ]).start();
   };
 
   const handleSwipe = (gestureState: PanResponderGestureState) => {
     if (gestureState.dx > 100 && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1); // Swipe left to go back
+      setCurrentIndex(currentIndex - 1);
     } else if (gestureState.dx < -100 && currentIndex < onboardingData.length - 1) {
-      setCurrentIndex(currentIndex + 1); // Swipe right to go forward
+      setCurrentIndex(currentIndex + 1);
     }
   };
 
   React.useEffect(() => {
-    fadeIn();
-    slideIn();
+    fadeAnim.setValue(0);
+    slideAnim.setValue(100);
+    animateContent();
   }, [currentIndex]);
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (e, gestureState) => {
-      handleSwipe(gestureState);
-    },
-    onPanResponderRelease: () => {
-      // Add any additional behavior on release if needed
-    },
+    onPanResponderMove: (_, gestureState) => handleSwipe(gestureState),
+    onPanResponderRelease: () => {},
   });
 
   return (
     <View style={styles.container}>
-      {/* Animated Background Elements */}
+      {/* Background Elements (unchanged) */}
       <View style={styles.backgroundContainer}>
         <Svg style={styles.bgSVG1} width={200} height={200} viewBox="0 0 200 200" fill="none">
           <Path d="M 0 0 L 200 200 L 0 200 Z" fill="#0391FA" opacity={0.15} />
@@ -100,59 +95,104 @@ const Onboarding = () => {
         </Svg>
       </View>
 
-      {/* Page Content */}
-      <View style={styles.slide} {...panResponder.panHandlers}>
-        <Animated.Image
-          source={onboardingData[currentIndex].image}
-          style={[styles.image, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
-        />
-        <Animated.Text
-          style={[styles.title, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
-        >
-          {onboardingData[currentIndex].title}
-        </Animated.Text>
-        {onboardingData[currentIndex].description ? (
-          <Animated.Text
-            style={[styles.description, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
-          >
-            {onboardingData[currentIndex].description}
-          </Animated.Text>
-        ) : null}
-      </View>
-
-      {/* Pagination and Buttons */}
-      <View style={styles.footer}>
-        <View style={styles.pagination}>
+      {/* Content Container */}
+      <View style={styles.contentContainer} {...panResponder.panHandlers}>
+        {/* Progress Bar */}
+        <View style={styles.progressContainer}>
           {onboardingData.map((_, index) => (
-            <View
-              key={index}
-              style={[styles.paginationDot, currentIndex === index && styles.paginationDotActive]}
-            />
+            <View key={index} style={styles.progressBarWrapper}>
+              <Animated.View 
+                style={[
+                  styles.progressBar,
+                  {
+                    width: currentIndex >= index ? '100%' : '0%',
+                    backgroundColor: currentIndex >= index ? '#4CAF50' : '#E0E0E0'
+                  }
+                ]}
+              />
+            </View>
           ))}
         </View>
 
-        {currentIndex < onboardingData.length - 1 ? (
-          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Text style={styles.nextText}>Next</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
-            <Text style={styles.buttonText}>Get Started</Text>
-          </TouchableOpacity>
-        )}
+        {/* Image Container */}
+        <View style={styles.imageContainer}>
+          <Animated.Image
+            source={onboardingData[currentIndex].image}
+            style={[
+              styles.image,
+              {
+                opacity: fadeAnim,
+                transform: [{ scale: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] }) }]
+              }
+            ]}
+          />
+        </View>
+
+        {/* Text Content */}
+        <View style={styles.textContainer}>
+          <Animated.Text
+            style={[
+              styles.title,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }]
+              }
+            ]}
+          >
+            {onboardingData[currentIndex].title}
+          </Animated.Text>
+          <Animated.Text
+            style={[
+              styles.description,
+              {
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }]
+              }
+            ]}
+          >
+            {onboardingData[currentIndex].description}
+          </Animated.Text>
+        </View>
+
+        {/* Buttons */}
+        <View style={styles.buttonContainer}>
+          {currentIndex < onboardingData.length - 1 ? (
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={handleNext}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.buttonText}>Continue</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.getStartedButton}
+              onPress={handleGetStarted}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.buttonText}>Get Started</Text>
+            </TouchableOpacity>
+          )}
+          
+          {currentIndex < onboardingData.length - 1 && (
+            <TouchableOpacity
+              style={styles.skipButton}
+              onPress={handleGetStarted}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.skipText}>Skip</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );
 };
 
-export default Onboarding;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1E90FF',
-    justifyContent: 'center',
-    position: 'relative',
   },
   backgroundContainer: {
     position: 'absolute',
@@ -166,74 +206,93 @@ const styles = StyleSheet.create({
   bgSVG3: { position: 'absolute', top: 100, right: -200, transform: [{ rotate: '45deg' }] },
   bgSVG4: { position: 'absolute', bottom: 0, left: 40, transform: [{ rotate: '45deg' }] },
   bgSVG5: { position: 'absolute', bottom: 0, right: -30, transform: [{ rotate: '-25deg' }] },
-  slide: {
-    flex: 4,
+  contentContainer: {
+    flex: 1,
+    paddingTop: 60,
+    paddingHorizontal: 20,
+  },
+  progressContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginBottom: 40,
+  },
+  progressBarWrapper: {
+    flex: 1,
+    height: 4,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 2,
+    marginHorizontal: 4,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    borderRadius: 2,
+    // transition: 'width 0.3s ease',
+  },
+  imageContainer: {
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    zIndex: 1,
   },
   image: {
-    width: 250,
-    height: 250,
+    width: 280,
+    height: 280,
     resizeMode: 'contain',
-    marginBottom: 20,
+  },
+  textContainer: {
+    flex: 2,
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginVertical: 10,
+    color: '#FFFFFF',
     textAlign: 'center',
-    color: '#ffffff',
+    marginBottom: 16,
   },
   description: {
     fontSize: 16,
-    color: '#ffffff',
+    color: '#FFFFFF',
     textAlign: 'center',
-    marginHorizontal: 20,
-    marginTop: 5,
+    lineHeight: 24,
+    opacity: 0.9,
   },
-  footer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  buttonContainer: {
     paddingHorizontal: 20,
-    zIndex: 1,
-  },
-  pagination: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  paginationDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#ccc',
-    marginHorizontal: 5,
-  },
-  paginationDotActive: {
-    backgroundColor: '#4CAF50',
+    paddingBottom: 40,
   },
   nextButton: {
     backgroundColor: '#2196F3',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 12,
+    elevation: 2,
   },
-  nextText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  button: {
+  getStartedButton: {
     backgroundColor: '#4CAF50',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 12,
+    elevation: 2,
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  skipButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  skipText: {
+    color: '#FFFFFF',
     fontSize: 16,
+    opacity: 0.8,
   },
 });
+
+export default Onboarding;

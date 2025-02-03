@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 
 const FavouritesScreen = () => {
   const favouriteItems = [
@@ -64,7 +65,7 @@ const FavouritesScreen = () => {
   const renderItem = ({ item }:any) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => alert(`Viewing: ${item.title}`)}
+      onPress={() => router.push("/(screens)/productDetails")}
     >
       <Image source={item.image} style={styles.cardImage} />
       <LinearGradient

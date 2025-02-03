@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { AntDesign, Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 interface CartItem {
   id: string;
@@ -65,11 +66,11 @@ const CartScreen: React.FC = () => {
 
   const renderItem = ({ item }: { item: CartItem }) => (
     <View style={styles.cartItem}>
-         {typeof item.image === 'string' ? (
-      <Image source={{ uri: item.image }} style={styles.productImage} />
-    ) : (
-      <Image source={item.image} style={styles.productImage} />
-    )}
+      {typeof item.image === 'string' ? (
+        <Image source={{ uri: item.image }} style={styles.productImage} />
+      ) : (
+        <Image source={item.image} style={styles.productImage} />
+      )}
       <View style={styles.details}>
         <Text style={styles.productName}>{item.name}</Text>
         <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
@@ -102,9 +103,10 @@ const CartScreen: React.FC = () => {
       {/* Cart Summary */}
       <View style={styles.summary}>
         <Text style={styles.totalText}>Total: ${calculateTotal()}</Text>
-        <TouchableOpacity style={styles.checkoutButton}>
-          <Text style={styles.checkoutText}>Checkout</Text>
+        <TouchableOpacity style={styles.checkoutButton} onPress={() => { router.push('/(screens)/checkout'); }}>
+          <Text style={styles.checkoutText}>Pay Now</Text>
         </TouchableOpacity>
+
       </View>
     </View>
   );

@@ -17,7 +17,13 @@ const RootLayout = () => {
       <Stack.Screen name="profile" options={{ headerShown: false}}/>
       <Stack.Screen name="about" options={{ headerShown: false}}/>
       <Stack.Screen name="collection" options={{ headerShown: false}}/>
+      <Stack.Screen name="productDetails" options={{ headerShown: false}}/>
+      <Stack.Screen name="checkout" options={{ headerShown: false}}/>
+      <Stack.Screen name="discount" options={{ headerShown: false}}/>
+      <Stack.Screen name="purchaseHistory" options={{ headerShown: false}}/>
+      <Stack.Screen name="purchaseDetails" options={{ headerShown: false}}/>
     </Stack>
+    
   );
 };
 

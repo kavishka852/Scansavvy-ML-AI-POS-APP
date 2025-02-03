@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // For back arrow icon
+import { ScrollView } from 'react-native-gesture-handler';
 
 const MyProfileScreen = () => {
   const navigation = useNavigation(); // Access navigation object
@@ -48,6 +49,7 @@ const MyProfileScreen = () => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -84,7 +86,7 @@ const MyProfileScreen = () => {
             keyboardType="email-address"
           />
         </View>
-        <View style={styles.field}>
+        {/* <View style={styles.field}>
           <Text style={styles.label}>Phone Number</Text>
           <TextInput
             style={styles.input}
@@ -93,7 +95,7 @@ const MyProfileScreen = () => {
             onChangeText={(text) => handleInputChange('phone', text)}
             keyboardType="phone-pad"
           />
-        </View>
+        </View> */}
         <View style={styles.field}>
           <Text style={styles.label}>New Password</Text>
           <TextInput
@@ -127,6 +129,7 @@ const MyProfileScreen = () => {
         </LinearGradient>
       </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 };
 
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 40,
+    top: 20,
     left: 20,
     zIndex: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
   },
   form: {
     backgroundColor: '#fff',
-    marginTop: 20,
+    marginTop: 10,
     marginHorizontal: 20,
     padding: 20,
     borderRadius: 15,

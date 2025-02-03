@@ -16,6 +16,10 @@ import NewsScreen from '../news';
 import MyAccountScreen from '../userAcoount';
 import aboutScrenn from '../about';
 import CollectionScreen from '../collection';
+import ProductDetailsScreen from '../productDetails';
+import CheckoutScreen from '../checkout';
+import MyProfileScreen from '../profile';
+import PurchaseHistorScreen from '../purchaseHistory';
 // const MyHeader = ({ title, style }: any) => {
 //   console.warn(title);
 //   return <View style={style}>
@@ -169,9 +173,9 @@ const TabRootLayout = () => {
                         </View>
                         <TouchableOpacity>
                           <View>
-                            <EvilIcons name="bell" size={40} color="white" />
+                            <EvilIcons name="cart" size={40} color="white" />
                             <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>5</Text>
                             </View>
                           </View>
                         </TouchableOpacity>
@@ -195,9 +199,9 @@ const TabRootLayout = () => {
                         </View>
                         <TouchableOpacity>
                           <View>
-                            <EvilIcons name="bell" size={40} color="white" />
+                            <EvilIcons name="cart" size={40} color="white" />
                             <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>5</Text>
                             </View>
                           </View>
                         </TouchableOpacity>
@@ -221,9 +225,9 @@ const TabRootLayout = () => {
                         </View>
                         <TouchableOpacity>
                           <View>
-                            <EvilIcons name="bell" size={40} color="white" />
+                            <EvilIcons name="cart" size={40} color="white" />
                             <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>5</Text>
                             </View>
                           </View>
                         </TouchableOpacity>
@@ -247,9 +251,35 @@ const TabRootLayout = () => {
                         </View>
                         <TouchableOpacity>
                           <View>
-                            <EvilIcons name="bell" size={40} color="white" />
+                            <EvilIcons name="cart" size={40} color="white" />
                             <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>99</Text>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>5</Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </>
+            }
+            else if (title === "purchasehistory") {
+              return <>
+                <View style={{ width: '100%', height: heightHeader, backgroundColor: "#1E90FF", paddingTop: Constants.statusBarHeight }}>
+                  <View style={styles.headerTop}>
+                    <View>
+                      <View style={styles.headerContent}>
+                        <TouchableOpacity onPress={({ }) => navigation.dispatch(DrawerActions.openDrawer())}>
+                          <Ionicons name="filter" size={30} color="white" />
+                        </TouchableOpacity>
+                        <View style={{ flexShrink: 1, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={[styles.headerTitle, { fontFamily: "Montserrat", fontWeight: 'bold', fontSize: 30, marginLeft: 9 }]}>ScanSavvy</Text>
+                        </View>
+                        <TouchableOpacity>
+                          <View>
+                            <EvilIcons name="cart" size={40} color="white" />
+                            <View style={{ width: 22, height: 22, borderRadius: 20, backgroundColor: 'red', position: 'absolute', top: -5, right: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                              <Text style={{ color: 'white', textAlign: 'center', fontSize: 10, fontWeight: 'bold' }}>5</Text>
                             </View>
                           </View>
                         </TouchableOpacity>
@@ -503,7 +533,7 @@ const MyDrawerApp = () => {
       />
 
 
-      <Drawer.Screen name="RecentlyViewed" component={TabRootLayout}
+      {/* <Drawer.Screen name="RecentlyViewed" component={ProductDetailsScreen}
         options={{
           drawerIcon: ({ focused, color, size }) => {
             return (
@@ -523,10 +553,10 @@ const MyDrawerApp = () => {
             )
           }
         }}
-      />
+      /> */}
 
 
-      <Drawer.Screen name="userAcoount" component={MyAccountScreen}
+      <Drawer.Screen name="userAcoount" component={MyProfileScreen}
         options={{
           headerShown: true,
           title: 'userAcoount',
@@ -551,8 +581,11 @@ const MyDrawerApp = () => {
         }}
       />
 
-      <Drawer.Screen name="Shipping" component={TabRootLayout}
+      <Drawer.Screen name="purchasehistory" component={PurchaseHistorScreen}
         options={{
+          headerShown: true,
+          title: 'purchasehistory',
+          headerTitle: "Purchase History",
           drawerIcon: ({ focused, color, size }) => {
             return (
               <View style={{ backgroundColor: focused ? "green" : "#fff", borderRadius: 8, padding: 2 }}>
@@ -564,7 +597,7 @@ const MyDrawerApp = () => {
             return (
               <View style={{ flex: 1 }}>
                 <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Shipping</Text>
+                  <Text style={{ flex: 1, color: focused ? "green" : color, fontSize: 16, fontWeight: 500, paddingLeft: 10 }}>Purchase History</Text>
                   <Entypo name="chevron-right" size={16} color={color} />
                 </View>
               </View>

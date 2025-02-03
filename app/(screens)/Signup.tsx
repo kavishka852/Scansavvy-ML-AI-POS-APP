@@ -1,46 +1,93 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { router } from 'expo-router';
 import BackgroundTriangles from '@/components/Scansavy_Prop/BackgroundTriangles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Signup = () => {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async () => {
+    if (!fullName || !email || !password || !confirmPassword) {
+      Alert.alert('Error', 'All fields are required!');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match!');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email: email,
+          password: password,
+        }),
+      });
+
+      const result = await response.json();
+      console.log('Response:', result);
+      Alert.alert(result);
+      if (response.ok) {
+        Alert.alert('Success', 'User registered successfully!');
+        router.push('/(screens)/Login'); // Redirect to login page
+      } else {
+        Alert.alert('Error', result.message || 'Registration failed!');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Unable to connect to the server. Please try again later.');
+    }
+  };
+
+
+
   return (
     <View style={styles.container}>
-      {/* Animated Background Elements */}
       <BackgroundTriangles />
 
-      {/* Title */}
       <View style={styles.titleContainer}>
         <Text style={styles.titleRow1}>Create</Text>
         <Text style={styles.titleRow2}>Your Account</Text>
       </View>
 
-      {/* Full Name Input */}
       <TextInput
         style={styles.input}
         placeholder="Full Name"
         placeholderTextColor="#B0B0B0"
+        value={fullName}
+        onChangeText={setFullName}
       />
 
-      {/* Email Input */}
       <TextInput
         style={styles.input}
         placeholder="Email"
         keyboardType="email-address"
         placeholderTextColor="#B0B0B0"
+        value={email}
+        onChangeText={setEmail}
       />
 
-      {/* Password Input with Show/Hide */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
           placeholder="Password"
           secureTextEntry={!passwordVisible}
           placeholderTextColor="#B0B0B0"
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity
           style={styles.eyeIcon}
@@ -54,13 +101,14 @@ const Signup = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Confirm Password Input with Show/Hide */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
           placeholder="Confirm Password"
           secureTextEntry={!confirmPasswordVisible}
           placeholderTextColor="#B0B0B0"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
         />
         <TouchableOpacity
           style={styles.eyeIcon}
@@ -74,13 +122,10 @@ const Signup = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Sign Up Button */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={loading}>
+        <Text style={styles.buttonText}>{loading ? 'Signing Up...' : 'Sign Up'}</Text>
       </TouchableOpacity>
 
-      {/* Social Login */}
-      <Text></Text>
       <Text>- OR Continue With -</Text>
       <View style={styles.socialContainer}>
         <TouchableOpacity style={[styles.socialButton, styles.googleButton]}>
@@ -93,7 +138,6 @@ const Signup = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Link to Login Page */}
       <Text style={styles.link} onPress={() => router.push('/(screens)/Login')}>
         Already have an account? Login
       </Text>
